@@ -1,0 +1,14 @@
+/build/
+/.android/
+/.ios/
+/.macos/
+/linux/
+/windows/
+/web/
+/.idea/
+/*.apk
+*.aab
+/build/
+.dart_tool/
+.packages
+/ios/Flutter/Generated.xcconfig

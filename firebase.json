@@ -1,0 +1,43 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "calories-tracking-fb637",
+          "appId": "1:688667436303:android:f07ca8cd16d96dbeb50a7a",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "calories-tracking-fb637",
+          "configurations": {
+            "android": "1:688667436303:android:f07ca8cd16d96dbeb50a7a",
+            "ios": "1:688667436303:ios:975ebecfbab5eba2b50a7a",
+            "macos": "1:688667436303:ios:975ebecfbab5eba2b50a7a",
+            "web": "1:688667436303:web:aabefd40a908e291b50a7a",
+            "windows": "1:688667436303:web:211fe13bb322bfd9b50a7a"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

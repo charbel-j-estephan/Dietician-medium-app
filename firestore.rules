@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function for authenticated users
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if the user is a dietician
+    function isDietician() {
+      // Ensure the 'role' field exists and is 'dietician'
+      return isAuthenticated() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'dietician';
+    }
+
+    // Match users collection
+    match /users/{userId} {
+      // Allow any authenticated user to read their own profile
+      // Allow dieticians to read all user profiles (for client list)
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isDietician());
+      // Allow any authenticated user to create their own profile (during signup)
+      allow create: if isAuthenticated();
+      // Allow users to update/delete their own profile
+      allow update, delete: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Match weights subcollection under users
+    match /users/{userId}/weights/{weightId} {
+      // Authenticated users can read/write their own weights
+      // Dieticians can read all client weights
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isDietician());
+      allow write: if isAuthenticated() && (request.auth.uid == userId || isDietician());
+    }
+
+    // Match water subcollection under users
+    match /users/{userId}/water/{waterId} {
+      // Authenticated users can read/write their own water entries
+      // Dieticians can read all client water entries
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isDietician());
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Match diary subcollection under users (for user's own diary entries)
+    match /users/{userId}/diary/{diaryEntryId} {
+      // Authenticated users can read/write their own diary entries
+      // Dieticians can read all client diary entries
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isDietician());
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+  }
+}
